@@ -83,6 +83,16 @@ Uploaded files are served statically from the `/uploads` path. For example:
 http://localhost:3000/uploads/your-file.png
 ```
 
+### Adding Admin Users Manually
+
+To add admin users manually, you can either:
+
+1. Directly update the user role in the database to `admin` for the desired user record.
+
+2. Modify the `saveNewUser` function in `src/user/user.service.ts` to set `data.role = 'admin'` before saving a new user. This will create a new user with admin privileges.
+
+Make sure to revert any code changes after creating admin users if you choose the second method.
+
 ## Testing
 
 - Run unit tests:
