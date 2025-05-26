@@ -14,7 +14,6 @@ This is the backend API for the Event Buddy application, built with [NestJS](htt
 
    ```bash
    git clone <repository-url>
-   cd backend/project
    ```
 
 2. Install dependencies:
