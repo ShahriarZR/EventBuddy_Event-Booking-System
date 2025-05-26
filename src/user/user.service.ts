@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { UserRegEvent } from 'src/entity/user_regEvent.entity';
 import { Event } from 'src/entity/event.entity';
+import { to24HourFormat } from 'src/common/utils/time.utils';
 
 @Injectable()
 export class UserService {
@@ -32,7 +33,7 @@ export class UserService {
         const event = await this.eventRepo.findOne({ where: { id: eventId } });
 
         if (!event) return { message: 'Event not found' };
-
+        
         const bookedEvents = await this.userRegEventRepo.find({
             where: { user: { id: userId }, event: { id: eventId } },
         });
@@ -40,7 +41,9 @@ export class UserService {
             return { message: 'You have already booked this event!' };
         }
 
-        const eventDate = new Date(event.date + 'T' + event.timeRange.split(' - ')[0]);
+        const timeStr = event.timeRange.split(' - ')[0];
+        const time24h = to24HourFormat(timeStr);
+        const eventDate = new Date(`${event.date}T${time24h}:00`);
         if (eventDate < new Date()) {
             return { message: 'Event is not available now!' };
         }

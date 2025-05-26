@@ -172,7 +172,7 @@ export class AdminController {
   )
   async updateEvent(
     @Request() req,
-    @Query('id', ParseIntPipe) id: number,
+    @Query('eventId', ParseIntPipe) id: number,
     @Body() data: UpdateEventDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
@@ -212,7 +212,7 @@ export class AdminController {
   @ApiQuery({ name: 'id', type: Number, description: 'ID of the event to delete' })
   async deleteEvent(
     @Request() req,
-    @Query('id', ParseIntPipe) id: number,
+    @Query('eventId', ParseIntPipe) id: number,
   ) {
     if (req.user.role !== 'admin') {
       throw new BadRequestException('Access denied!');

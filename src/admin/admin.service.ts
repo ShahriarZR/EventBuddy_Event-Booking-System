@@ -2,13 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Event } from 'src/entity/event.entity';
+import { UserRegEvent } from 'src/entity/user_regEvent.entity';
 
 
 @Injectable()
 export class AdminService {
   constructor(
     @InjectRepository(Event)
-    private readonly eventRepo: Repository<Event>,
+    private readonly eventRepo: Repository<Event>
+    ,
+    @InjectRepository(UserRegEvent) private userRegEventRepo: Repository<UserRegEvent>,
   ) { }
 
   async createNewEvent(data, imageFilename?: string) {
@@ -58,13 +61,13 @@ export class AdminService {
     if (data.timeRange) {
       data.timeRange = data.timeRange.replace(/\s?(am|pm)/gi, match => match.toUpperCase());
     }
-    if (data.tags){
+    if (data.tags) {
       data.tags = data.tags
-      .split(',')
-      .map(tag => tag.trim().toLowerCase())
-      .join(',');
+        .split(',')
+        .map(tag => tag.trim().toLowerCase())
+        .join(',');
     }
-    
+
     const updated = {
       ...event,
       ...data,
@@ -72,7 +75,7 @@ export class AdminService {
     };
 
     await this.eventRepo.save(updated);
-    return { message: 'Event: ' + updated.title + ' updated successfully' };
+    return { message: 'Event updated successfully' };
   }
 
   async deleteEvent(id) {
@@ -81,6 +84,7 @@ export class AdminService {
       return { message: 'Event not found' };
     }
 
+    await this.userRegEventRepo.delete({ event: id });
     await this.eventRepo.delete({ id });
     return { message: 'Event deleted successfully' };
   }

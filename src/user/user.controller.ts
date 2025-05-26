@@ -33,7 +33,7 @@ export class UserController {
         @Query('eventId', ParseIntPipe) eventId: number,
         @Body() data: BookEventDto
     ) {
-        const userId = req.user.id;
+        const userId = req.user.sub;
         return this.userService.bookEvent(userId, eventId, data.seats);
     }
 
@@ -46,7 +46,7 @@ export class UserController {
     getUserEvents(
         @Request() req,
     ) {
-        const userId = req.user.id;
+        const userId = req.user.sub;
         return this.userService.getUserEvents(userId);
     }
 
@@ -72,7 +72,7 @@ export class UserController {
         @Request() req,
         @Query('eventId', ParseIntPipe) eventId: number
     ) {
-        const userId = req.user.id;
+        const userId = req.user.sub;
         return this.userService.cancelBooking(userId, eventId);
     }
 }
