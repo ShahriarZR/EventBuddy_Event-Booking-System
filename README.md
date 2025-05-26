@@ -82,7 +82,7 @@ Uploaded files are served statically from the `/uploads` path. For example:
 http://localhost:3000/uploads/your-file.png
 ```
 
-### Adding Admin Users Manually
+## Adding Admin Users Manually
 
 To add admin users manually, you can either:
 
